@@ -1434,10 +1434,10 @@
       const bytes = new Uint8Array(binStr.length);
       for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
       const ds = new DecompressionStream('gzip');
-      const writer = ds.writable.getWriter();
-      writer.write(bytes);
-      writer.close();
-      const resp = new Response(ds.readable);
+      const stream = new Blob([bytes]).stream().pipeThrough(ds);
+      // writer.write
+      // writer.close
+      const resp = new Response(stream);
       return await resp.json();
     }
 
