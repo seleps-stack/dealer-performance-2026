@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dealer Performance 2026 | Phetburi EV Group — Warranty Claim Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg-main: #070d19;
+--bg-card: #0f172a;
+--bg-card-hover: #16223b;
+--bg-glass: rgba(15, 23, 42, 0.85);
+--border-subtle: rgba(148, 163, 184, 0.14);
+--border-highlight: rgba(20, 184, 166, 0.45);
+--text-primary: #f8fafc;
+--text-secondary: #94a3b8;
+--text-muted: #64748b;
+--accent-teal: #14b8a6;
+--accent-teal-dark: #0d9488;
+--accent-blue: #3b82f6;
+--accent-amber: #f59e0b;
+--accent-rose: #f43f5e;
+--accent-emerald: #10b981;
+--shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+body {
+font-family: 'IBM Plex Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+background: radial-gradient(circle at 15% 0%, #0d2538 0%, var(--bg-main) 45%, #050911 100%);
+color: var(--text-primary);
+line-height: 1.6;
+min-height: 100vh;
+padding-bottom: 4rem;
+}
+/* Top Navigation / Header */
+.topbar {
+position: sticky;
+top: 0;
+z-index: 100;
+backdrop-filter: blur(16px);
+background: rgba(7, 13, 25, 0.88);
+border-bottom: 1px solid var(--border-subtle);
+padding: 1rem 2rem;
+}
+.topbar-inner {
+max-width: 1400px;
+margin: 0 auto;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+gap: 1rem;
+}
+.brand-group {
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+.brand-badge {
+background: linear-gradient(135deg, #14b8a6, #0284c7);
+color: #fff;
+font-weight: 700;
+font-size: 0.85rem;
+letter-spacing: 0.06em;
+padding: 0.45rem 0.85rem;
+border-radius: 8px;
+text-transform: uppercase;
+box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+.brand-title h1 {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--text-primary);
+letter-spacing: -0.01em;
+}
+.brand-title p {
+font-size: 0.82rem;
+color: var(--text-secondary);
+}
+/* Branch Switcher Tabs */
+.branch-tabs {
+display: flex;
+background: #0b1324;
+padding: 0.3rem;
+border-radius: 12px;
+border: 1px solid var(--border-subtle);
+gap: 0.35rem;
+flex-wrap: wrap;
+}
+.branch-tab {
+border: none;
+background: transparent;
+color: var(--text-secondary);
+font-family: inherit;
+font-size: 0.9rem;
+font-weight: 600;
+padding: 0.55rem 1.1rem;
+border-radius: 9px;
+cursor: pointer;
+transition: all 0.2s ease;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.branch-tab:hover {
+color: var(--text-primary);
+background: rgba(255, 255, 255, 0.04);
+}
+.branch-tab.active {
+background: linear-gradient(135deg, rgba(20, 184, 166, 0.22), rgba(59, 130, 246, 0.22));
+color: #5eead4;
+border: 1px solid var(--border-highlight);
+box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+}
+.branch-pill-count {
+font-size: 0.75rem;
+padding: 0.1rem 0.45rem;
+border-radius: 99px;
+background: rgba(255, 255, 255, 0.08);
+color: var(--text-primary);
+}
+/* Main Container */
+.container {
+max-width: 1400px;
+margin: 1.75rem auto 0;
+padding: 0 2rem;
+}
+/* Dealer Banner */
+.dealer-banner {
+background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(13, 37, 56, 0.85) 100%);
+border: 1px solid var(--border-subtle);
+border-left: 5px solid var(--accent-teal);
+border-radius: 16px;
+padding: 1.4rem 1.75rem;
+margin-bottom: 1.5rem;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+gap: 1rem;
+box-shadow: var(--shadow-lg);
+}
+.dealer-banner-info h2 {
+font-size: 1.5rem;
+font-weight: 700;
+color: #fff;
+display: flex;
+align-items: center;
+gap: 0.75rem;
+}
+.dealer-banner-info p {
+font-size: 0.92rem;
+color: var(--text-secondary);
+margin-top: 0.2rem;
+}
+.hygiene-badge {
+display: inline-flex;
+align-items: center;
+gap: 0.45rem;
+font-size: 0.82rem;
+background: rgba(16, 185, 129, 0.12);
+color: #34d399;
+border: 1px solid rgba(16, 185, 129, 0.3);
+padding: 0.45rem 0.9rem;
+border-radius: 999px;
+font-weight: 500;
+}
+/* KPI Summary Grid */
+.kpi-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 1.15rem;
+margin-bottom: 1.75rem;
+}
+.kpi-card {
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+border-radius: 14px;
+padding: 1.25rem 1.4rem;
+position: relative;
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+}
+.kpi-card::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 4px;
+background: var(--card-accent, var(--accent-teal));
+}
+.kpi-label {
+font-size: 0.85rem;
+color: var(--text-secondary);
+font-weight: 500;
+margin-bottom: 0.4rem;
+}
+.kpi-value {
+font-size: 1.95rem;
+font-weight: 700;
+color: var(--text-primary);
+letter-spacing: -0.02em;
+line-height: 1.2;
+}
+.kpi-sub {
+font-size: 0.8rem;
+color: var(--text-muted);
+margin-top: 0.45rem;
+display: flex;
+align-items: center;
+gap: 0.4rem;
+flex-wrap: wrap;
+}
+/* Section Headers */
+.section-block {
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+border-radius: 16px;
+padding: 1.6rem;
+margin-bottom: 1.75rem;
+box-shadow: var(--shadow-lg);
+}
+.section-header {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: flex-start;
+gap: 1rem;
+margin-bottom: 1.35rem;
+padding-bottom: 0.9rem;
+border-bottom: 1px solid var(--border-subtle);
+}
+.section-title-group h3 {
+font-size: 1.2rem;
+font-weight: 700;
+color: #fff;
+display: flex;
+align-items: center;
+gap: 0.6rem;
+}
+.section-tag {
+font-size: 0.75rem;
+font-weight: 700;
+padding: 0.2rem 0.6rem;
+border-radius: 6px;
+background: rgba(20, 184, 166, 0.16);
+color: #5eead4;
+border: 1px solid rgba(20, 184, 166, 0.3);
+}
+.section-title-group p {
+font-size: 0.88rem;
+color: var(--text-secondary);
+margin-top: 0.25rem;
+}
+/* Two-Column Layout for 7.1 & Status AU */
+.two-col {
+display: grid;
+grid-template-columns: 1.35fr 1fr;
+gap: 1.5rem;
+}
+@media (max-width: 1024px) {
+.two-col {
+grid-template-columns: 1fr;
+}
+}
+/* Data Tables */
+.table-wrap {
+overflow-x: auto;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 0.88rem;
+}
+th, td {
+padding: 0.72rem 0.85rem;
+text-align: left;
+border-bottom: 1px solid var(--border-subtle);
+}
+th {
+background: rgba(255, 255, 255, 0.03);
+color: var(--text-secondary);
+font-weight: 600;
+font-size: 0.8rem;
+text-transform: uppercase;
+letter-spacing: 0.03em;
+white-space: nowrap;
+}
+tr:hover td {
+background: rgba(255, 255, 255, 0.02);
+}
+tr.total-row td {
+background: rgba(20, 184, 166, 0.08);
+font-weight: 700;
+color: #fff;
+border-top: 2px solid rgba(20, 184, 166, 0.35);
+}
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+/* Status & KPI Pills */
+.pill {
+display: inline-flex;
+align-items: center;
+padding: 0.18rem 0.6rem;
+border-radius: 999px;
+font-size: 0.76rem;
+font-weight: 600;
+white-space: nowrap;
+}
+.pill-pass {
+background: rgba(16, 185, 129, 0.15);
+color: #34d399;
+border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.pill-warn {
+background: rgba(245, 158, 11, 0.15);
+color: #fbbf24;
+border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.pill-fail {
+background: rgba(244, 63, 94, 0.15);
+color: #fb7185;
+border: 1px solid rgba(244, 63, 94, 0.35);
+}
+.pill-info {
+background: rgba(59, 130, 246, 0.15);
+color: #60a5fa;
+border: 1px solid rgba(59, 130, 246, 0.35);
+}
+/* Progress Bar in Table */
+.bar-container {
+width: 100%;
+min-width: 140px;
+height: 10px;
+background: rgba(255, 255, 255, 0.07);
+border-radius: 99px;
+position: relative;
+overflow: visible;
+}
+.bar-fill {
+height: 100%;
+border-radius: 99px;
+transition: width 0.4s ease;
+}
+.bar-target-line {
+position: absolute;
+top: -3px;
+bottom: -3px;
+left: 95%;
+width: 2px;
+background: #fbbf24;
+z-index: 2;
+}
+/* Topic 7.3 Cards: Top 3 Non-Approval Reasons per Claim Type */
+.filter-toggle {
+display: flex;
+background: #09101f;
+padding: 0.25rem;
+border-radius: 10px;
+border: 1px solid var(--border-subtle);
+gap: 0.25rem;
+}
+.filter-btn {
+border: none;
+background: transparent;
+color: var(--text-secondary);
+font-family: inherit;
+font-size: 0.8rem;
+font-weight: 600;
+padding: 0.4rem 0.8rem;
+border-radius: 7px;
+cursor: pointer;
+}
+.filter-btn.active {
+background: rgba(20, 184, 166, 0.2);
+color: #5eead4;
+border: 1px solid rgba(20, 184, 166, 0.4);
+}
+.claim-type-cards {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+gap: 1.25rem;
+}
+@media (max-width: 500px) {
+.claim-type-cards {
+grid-template-columns: 1fr;
+}
+}
+.ct-card {
+background: #0b1324;
+border: 1px solid var(--border-subtle);
+border-radius: 14px;
+padding: 1.25rem;
+display: flex;
+flex-direction: column;
+gap: 0.9rem;
+transition: border-color 0.2s ease;
+}
+.ct-card:hover {
+border-color: rgba(148, 163, 184, 0.35);
+}
+.ct-card-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+gap: 0.75rem;
+padding-bottom: 0.75rem;
+border-bottom: 1px solid var(--border-subtle);
+}
+.ct-card-title h4 {
+font-size: 1.02rem;
+font-weight: 700;
+color: #fff;
+}
+.ct-card-title span {
+font-size: 0.8rem;
+color: var(--text-secondary);
+}
+.ct-stats-strip {
+display: flex;
+gap: 0.6rem;
+flex-wrap: wrap;
+font-size: 0.78rem;
+}
+.ct-stat-item {
+background: rgba(255, 255, 255, 0.03);
+border: 1px solid var(--border-subtle);
+padding: 0.3rem 0.65rem;
+border-radius: 8px;
+color: var(--text-secondary);
+}
+.ct-stat-item strong {
+color: var(--text-primary);
+}
+.reason-rank-list {
+display: flex;
+flex-direction: column;
+gap: 0.75rem;
+}
+.reason-item {
+background: rgba(15, 23, 42, 0.8);
+border: 1px solid rgba(148, 163, 184, 0.12);
+border-radius: 10px;
+padding: 0.8rem 0.95rem;
+}
+.reason-top {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 0.6rem;
+margin-bottom: 0.4rem;
+}
+.rank-badge {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-width: 24px;
+height: 24px;
+padding: 0 0.45rem;
+border-radius: 6px;
+font-size: 0.75rem;
+font-weight: 700;
+background: rgba(244, 63, 94, 0.2);
+color: #fb7185;
+border: 1px solid rgba(244, 63, 94, 0.35);
+}
+.rank-1 .rank-badge {
+background: linear-gradient(135deg, #f43f5e, #e11d48);
+color: #fff;
+border: none;
+}
+.rank-2 .rank-badge {
+background: rgba(245, 158, 11, 0.22);
+color: #fbbf24;
+border-color: rgba(245, 158, 11, 0.4);
+}
+.rank-3 .rank-badge {
+background: rgba(59, 130, 246, 0.22);
+color: #60a5fa;
+border-color: rgba(59, 130, 246, 0.4);
+}
+.reason-name {
+font-size: 0.88rem;
+font-weight: 600;
+color: #f1f5f9;
+flex: 1;
+}
+.reason-count {
+font-size: 0.82rem;
+font-weight: 700;
+color: #fb7185;
+white-space: nowrap;
+}
+.reason-samples {
+margin-top: 0.45rem;
+padding-top: 0.45rem;
+border-top: 1px dashed rgba(148, 163, 184, 0.14);
+font-size: 0.78rem;
+color: var(--text-secondary);
+}
+.reason-samples ul {
+list-style: none;
+display: flex;
+flex-direction: column;
+gap: 0.25rem;
+}
+.reason-samples li {
+word-break: break-word;
+line-height: 1.45;
+}
+.sample-tag {
+color: #5eead4;
+font-weight: 600;
+margin-right: 0.3rem;
+}
+/* Side-by-side comparison cards for Group view */
+.branch-compare-banner {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1.15rem;
+margin-bottom: 1.75rem;
+}
+@media (max-width: 860px) {
+.branch-compare-banner {
+grid-template-columns: 1fr;
+}
+}
+.b-mini-card {
+background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(11, 19, 36, 0.9));
+border: 1px solid var(--border-subtle);
+border-radius: 14px;
+padding: 1.15rem 1.35rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 1rem;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.b-mini-card:hover {
+border-color: var(--accent-teal);
+transform: translateY(-2px);
+}
+.b-mini-card.selected {
+border-color: var(--accent-teal);
+background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(15, 23, 42, 0.95));
+}
+.footer {
+max-width: 1400px;
+margin: 2rem auto 0;
+padding: 1.5rem 2rem 0;
+border-top: 1px solid var(--border-subtle);
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+color: var(--text-muted);
+font-size: 0.82rem;
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="topbar-inner">
+<div class="brand-group">
+<div class="brand-badge">BYD | RÊVER</div>
+<div class="brand-title">
+<h1>DEALER PERFORMANCE 2026 — Phetburi EV Group</h1>
+<p>ระบบวิเคราะห์คุณภาพงานเคลมประจำปี (แยกรายสาขา & เจาะลึก Top 3 สาเหตุไม่อนุมัติรายประเภทเคลม)</p>
+</div>
+</div>
+<div class="branch-tabs" id="branchTabs">
+<button class="branch-tab active" data-branch="ratchaburi" onclick="selectBranch('ratchaburi')">
+📍 สาขาที่ 1: BYD B1 Ratchaburi
+<span class="branch-pill-count">1,142 เคลม</span>
+</button>
+<button class="branch-tab" data-branch="phetchaburi" onclick="selectBranch('phetchaburi')">
+📍 สาขาที่ 2: BYD Phetchaburi EV
+<span class="branch-pill-count">916 เคลม</span>
+</button>
+<button class="branch-tab" data-branch="all_group" onclick="selectBranch('all_group')">
+🏢 รวมกลุ่ม Phetburi EV (2 สาขา)
+<span class="branch-pill-count">2,058 เคลม</span>
+</button>
+</div>
+</div>
+</header>
+<main class="container">
+<!-- Quick Branch Switcher Cards -->
+<div class="branch-compare-banner">
+<div class="b-mini-card selected" id="mini-ratchaburi" onclick="selectBranch('ratchaburi')">
+<div>
+<div style="font-size:0.78rem; color:#5eead4; font-weight:600;">สาขาที่ 1 (คลิกเพื่อดูข้อมูลเฉพาะสาขาราชบุรี)</div>
+<div style="font-size:1.1rem; font-weight:700; color:#fff;">BYD B1 Ratchaburi (บีวัน ราชบุรี)</div>
+<div style="font-size:0.82rem; color:#94a3b8;">รวม 1,142 เคลม | อนุมัติ 1,001 (87.65%) | ไม่อนุมัติ 141 (12.35%)</div>
+</div>
+<div style="text-align:right;">
+<div style="font-size:1.45rem; font-weight:700; color:#34d399;">87.65%</div>
+<span class="pill pill-fail">KPI Gap -7.35%</span>
+</div>
+</div>
+<div class="b-mini-card" id="mini-phetchaburi" onclick="selectBranch('phetchaburi')">
+<div>
+<div style="font-size:0.78rem; color:#60a5fa; font-weight:600;">สาขาที่ 2 (คลิกเพื่อดูข้อมูลเฉพาะสาขาเพชรบุรี)</div>
+<div style="font-size:1.1rem; font-weight:700; color:#fff;">BYD Phetchaburi EV (เพชรบุรี อีวี)</div>
+<div style="font-size:0.82rem; color:#94a3b8;">รวม 916 เคลม | อนุมัติ 799 (87.23%) | ไม่อนุมัติ 117 (12.77%)</div>
+</div>
+<div style="text-align:right;">
+<div style="font-size:1.45rem; font-weight:700; color:#34d399;">87.23%</div>
+<span class="pill pill-fail">KPI Gap -7.77%</span>
+</div>
+</div>
+</div>
+<!-- Active Branch Banner -->
+<div class="dealer-banner">
+<div class="dealer-banner-info">
+<h2 id="activeBranchTitle">BYD B1 Ratchaburi (สาขาราชบุรี)</h2>
+<p id="activeBranchSubtitle">บริษัท บีวัน ราชบุรี ออโตโมทีฟ จำกัด | รหัสดีลเลอร์: APTH36R1SW</p>
+</div>
+<div class="hygiene-badge">
+✓ Unmerged & Deduplicated (คอลัมน์ I: Claim application form)
+</div>
+</div>
+<!-- Top 4 KPI Cards -->
+<div class="kpi-grid" id="kpiGrid"></div>
+<!-- Section 1: Topic 7.1 & Status AU -->
+<section class="section-block">
+<div class="section-header">
+<div class="section-title-group">
+<h3>
+<span class="section-tag">หัวข้อ 7.1 & คอลัมน์ AU</span>
+ปริมาณงานเคลมทั้งปีแยกตามประเภทเคลม และสถานะใบเคลม (Application form status)
+</h3>
+<p>แสดงจำนวนใบเคลมทั้งปีแยกตามประเภทเคลม (คอลัมน์ D) และสรุปสถานะเคลมตามความหมายในคอลัมน์ AU ของสาขาที่เลือก</p>
+</div>
+</div>
+<div class="two-col">
+<div>
+<h4 style="font-size:0.95rem; color:#cbd5e1; margin-bottom:0.75rem;">1) จำนวนเคลมทั้งปีแยกตามประเภทเคลม (Topic 7.1)</h4>
+<div class="table-wrap" id="volumeTableWrap"></div>
+</div>
+<div>
+<h4 style="font-size:0.95rem; color:#cbd5e1; margin-bottom:0.75rem;">2) สถานะใบเคลมในคอลัมน์ AU (Application form status)</h4>
+<div class="table-wrap" id="statusTableWrap"></div>
+</div>
+</div>
+</section>
+<!-- Section 2: Topic 7.2 Approval Rate vs KPI 95% -->
+<section class="section-block">
+<div class="section-header">
+<div class="section-title-group">
+<h3>
+<span class="section-tag">หัวข้อ 7.2 | เป้าหมาย KPI ≥ 95%</span>
+อัตราการอนุมัติและไม่อนุมัติแยกตามประเภทเคลม เทียบเกณฑ์ KPI 95.00%
+</h3>
+<p>วิเคราะห์จำนวนและเปอร์เซ็นต์การอนุมัติ (Agreed + Approved by distributor) เทียบกับไม่อนุมัติ แยกตามประเภทเคลมของสาขาที่เลือก</p>
+</div>
+</div>
+<div class="table-wrap" id="kpiTableWrap"></div>
+</section>
+<!-- Section 3: Topic 7.3 Top 3 Non-Approval Reasons per Claim Type -->
+<section class="section-block">
+<div class="section-header">
+<div class="section-title-group">
+<h3>
+<span class="section-tag">หัวข้อ 7.3 | Top 3 Reasons by Claim Type</span>
+เจาะลึก Top 3 เหตุผลที่ไม่อนุมัติ แยกตามประเภทเคลม (จากคอลัมน์ AY: Approval remarks)
+</h3>
+<p>แสดงเฉพาะ 3 อันดับแรกของเหตุผลการไม่อนุมัติในแต่ละประเภทเคลม พร้อมตัวอย่างข้อความแจ้งเตือนจริงจากคอลัมน์ AY</p>
+</div>
+<div class="filter-toggle">
+<button class="filter-btn active" id="btnModeActioned" onclick="setReasonMode('actioned')">
+เฉพาะที่ถูกตีกลับ/ปฏิเสธจริง (Returned & Rejected)
+</button>
+<button class="filter-btn" id="btnModeAll" onclick="setReasonMode('all')">
+รวมรายการที่อยู่ระหว่างรออนุมัติ (Include Pending)
+</button>
+</div>
+</div>
+<div class="claim-type-cards" id="top3CardsContainer"></div>
+</section>
+</main>
+<footer class="footer">
+<div>Dealer Quality & Data Analysis — BYD / Rêver Automotive Co., Ltd.</div>
+<div>ข้อมูล ณ วันที่ 12 พฤศจิกายน 2026 | เกณฑ์มาตรฐาน KPI อัตราการอนุมัติเคลม ≥ 95.00%</div>
+</footer>
+<script>
+const DASHBOARD_DATA = {"group_name":"Phetburi EV Group","generated_date":"2026-11-12","branches":{"ratchaburi":{"name":"BYD B1 Ratchaburi (สาขาราชบุรี)","subtitle":"บริษัท บีวัน ราชบุรี ออโตโมทีฟ จำกัด | รหัสดีลเลอร์: APTH36R1SW","total_claims":1142,"approved_claims":1001,"non_approved_claims":141,"approved_pct":87.65,"non_approved_pct":12.35,"kpi_target":95.0,"kpi_gap":-7.35,"returned_total":81,"rejected_total":23,"pending_total":37,"status_breakdown":[{"status_en":"Agreed","status_th":"อนุมัติ","group":"Approved","count":513,"pct":44.92},{"status_en":"Approved by distributor","status_th":"อนุมัติ","group":"Approved","count":488,"pct":42.73},{"status_en":"Return by dealer","status_th":"Rever ส่งคืน","group":"Returned","count":74,"pct":6.48},{"status_en":"Reported by sub-dealer","status_th":"ดีลเลอร์ยื่นส่งรายงานเคลม","group":"Pending","count":24,"pct":2.1},{"status_en":"Rejected","status_th":"BYD ปฏิเสธ","group":"Rejected/Refused","count":13,"pct":1.14},{"status_en":"Refused by dealer","status_th":"rever ปฏิเสธ","group":"Rejected/Refused","count":10,"pct":0.88},{"status_en":"Return","status_th":"BYD ส่งคืน","group":"Returned","count":7,"pct":0.61},{"status_en":"Save","status_th":"Rever ยื่นส่ง BYD","group":"Pending","count":10,"pct":0.88},{"status_en":"Submitted","status_th":"Rever ยื่นส่ง BYD","group":"Pending","count":3,"pct":0.26}],"claim_types":[{"type_en":"Free maintenance claim","type_th":"เช็กระยะฟรี (Free Maintenance)","total":572,"share_of_branch_pct":50.09,"approved":488,"approved_pct":85.31,"non_approved":84,"non_approved_pct":14.69,"kpi_gap":-9.69,"kpi_passed":false,"returned_count":48,"rejected_count":6,"pending_count":30,"actioned_non_approved_count":54,"top3_reasons_actioned":[{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":20,"pct_of_actioned":37.04,"pct_of_type_non_approved":23.81,"samples":[{"text":"-โปรดแนบข้อมูลประวัติ Service ล่าสุด ที่สอดคล้องกับข้อมูลในระบบด้วยนะคะ","count":4},{"text":"-ข้อมูล VIN, เลขไมล์, Warranty book และประวัติ Service ที่แนบมาไม่สอดคล้องกับข้อมูลในระบบDMS โปรด...","count":2}]},{"reason":"อะไหล่ติด Back Order แต่ไม่แนบใบ PO / ไม่ระบุหมายเหตุ B/O","count":13,"pct_of_actioned":24.07,"pct_of_type_non_approved":15.48,"samples":[{"text":"-หมายเลขเคลมนี้เป็นเคลมที่มีรายการอะไหล่ติด Back order หรือไม่ ถ้าหากใช่กรุณาแนบเอกสาร Part order...","count":10},{"text":"-หมายเลขเคลมนี้เป็นเคลมที่มีรายการอะไหล่ติด Back order หรือไม่ ถ้าหากใช่กรุณาแนบเอกสาร Part order...","count":1}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":8,"pct_of_actioned":14.81,"pct_of_type_non_approved":9.52,"samples":[{"text":"Over the report time limit","count":8}]}],"top3_reasons_all":[{"reason":"อยู่ระหว่างดำเนินการ / รอพิจารณาอนุมัติ (Pending / In-Process)","count":30,"pct_of_type_non_approved":35.71,"pct_of_type_total":5.24,"samples":[{"text":"Dealer agreed automaticly","count":22},{"text":"(ไม่ระบุข้อความในช่อง Approval remarks)","count":8}]},{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":20,"pct_of_type_non_approved":23.81,"pct_of_type_total":3.5,"samples":[{"text":"-โปรดแนบข้อมูลประวัติ Service ล่าสุด ที่สอดคล้องกับข้อมูลในระบบด้วยนะคะ","count":4},{"text":"-ข้อมูล VIN, เลขไมล์, Warranty book และประวัติ Service ที่แนบมาไม่สอดคล้องกับข้อมูลในระบบDMS โปรด...","count":2}]},{"reason":"อะไหล่ติด Back Order แต่ไม่แนบใบ PO / ไม่ระบุหมายเหตุ B/O","count":13,"pct_of_type_non_approved":15.48,"pct_of_type_total":2.27,"samples":[{"text":"-หมายเลขเคลมนี้เป็นเคลมที่มีรายการอะไหล่ติด Back order หรือไม่ ถ้าหากใช่กรุณาแนบเอกสาร Part order...","count":10},{"text":"-หมายเลขเคลมนี้เป็นเคลมที่มีรายการอะไหล่ติด Back order หรือไม่ ถ้าหากใช่กรุณาแนบเอกสาร Part order...","count":1}]}]},{"type_en":"General Claim","type_th":"เคลมทั่วไป (General Claim)","total":409,"share_of_branch_pct":35.81,"approved":372,"approved_pct":90.95,"non_approved":37,"non_approved_pct":9.05,"kpi_gap":-4.05,"kpi_passed":false,"returned_count":22,"rejected_count":11,"pending_count":4,"actioned_non_approved_count":33,"top3_reasons_actioned":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":14,"pct_of_actioned":42.42,"pct_of_type_non_approved":37.84,"samples":[{"text":"Wrong currency (Other cost)","count":1},{"text":"รหัสค่าแรงชั่วโมงงานไม่ถูกต้อง เปลี่ยนเป็น SC2ER6102264GH0 - Replace right front door handle box ...","count":1}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":6,"pct_of_actioned":18.18,"pct_of_type_non_approved":16.22,"samples":[{"text":"Exceeding the scope of the claim","count":3},{"text":"not quality problem","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":3,"pct_of_actioned":9.09,"pct_of_type_non_approved":8.11,"samples":[{"text":"Over the report time limit","count":3}]}],"top3_reasons_all":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":14,"pct_of_type_non_approved":37.84,"pct_of_type_total":3.42,"samples":[{"text":"Wrong currency (Other cost)","count":1},{"text":"รหัสค่าแรงชั่วโมงงานไม่ถูกต้อง เปลี่ยนเป็น SC2ER6102264GH0 - Replace right front door handle box ...","count":1}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":6,"pct_of_type_non_approved":16.22,"pct_of_type_total":1.47,"samples":[{"text":"Exceeding the scope of the claim","count":3},{"text":"not quality problem","count":2}]},{"reason":"อยู่ระหว่างดำเนินการ / รอพิจารณาอนุมัติ (Pending / In-Process)","count":4,"pct_of_type_non_approved":10.81,"pct_of_type_total":0.98,"samples":[{"text":"Dealer agreed automaticly","count":2},{"text":"System Initial review Approved","count":2}]}]},{"type_en":"Claim of Technical Project","type_th":"แคมเปญเทคนิค (Technical Project / TJ)","total":101,"share_of_branch_pct":8.84,"approved":100,"approved_pct":99.01,"non_approved":1,"non_approved_pct":0.99,"kpi_gap":4.01,"kpi_passed":true,"returned_count":0,"rejected_count":1,"pending_count":0,"actioned_non_approved_count":1,"top3_reasons_actioned":[{"reason":"ไม่ได้ขอ Pre-approval ก่อนซ่อม / รอระบบ Pop-up / ให้ส่งใหม่","count":1,"pct_of_actioned":100.0,"pct_of_type_non_approved":100.0,"samples":[{"text":"agree to submit again","count":1}]}],"top3_reasons_all":[{"reason":"ไม่ได้ขอ Pre-approval ก่อนซ่อม / รอระบบ Pop-up / ให้ส่งใหม่","count":1,"pct_of_type_non_approved":100.0,"pct_of_type_total":0.99,"samples":[{"text":"agree to submit again","count":1}]}]},{"type_en":"Replace under FOC Claim","type_th":"เคลมอะไหล่ฟรี (Replace under FOC)","total":20,"share_of_branch_pct":1.75,"approved":15,"approved_pct":75.0,"non_approved":5,"non_approved_pct":25.0,"kpi_gap":-20.0,"kpi_passed":false,"returned_count":2,"rejected_count":2,"pending_count":1,"actioned_non_approved_count":4,"top3_reasons_actioned":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":2,"pct_of_actioned":50.0,"pct_of_type_non_approved":40.0,"samples":[{"text":"other cost; use before VAT price","count":1},{"text":"ระบุปริมาณน้ำยาที่ดูดไม่ตรงตาม vacuum data ระบุ R134a ที่ดูดออก 21 g น้ำมันคอมที่ดูดออก 50 g ราคา...","count":1}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":2,"pct_of_actioned":50.0,"pct_of_type_non_approved":40.0,"samples":[{"text":"Over the report time limit","count":2}]}],"top3_reasons_all":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":2,"pct_of_type_non_approved":40.0,"pct_of_type_total":10.0,"samples":[{"text":"other cost; use before VAT price","count":1},{"text":"ระบุปริมาณน้ำยาที่ดูดไม่ตรงตาม vacuum data ระบุ R134a ที่ดูดออก 21 g น้ำมันคอมที่ดูดออก 50 g ราคา...","count":1}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":2,"pct_of_type_non_approved":40.0,"pct_of_type_total":10.0,"samples":[{"text":"Over the report time limit","count":2}]},{"reason":"อยู่ระหว่างดำเนินการ / รอพิจารณาอนุมัติ (Pending / In-Process)","count":1,"pct_of_type_non_approved":20.0,"pct_of_type_total":5.0,"samples":[{"text":"System Initial review Approved","count":1}]}]},{"type_en":"Marketing activities claim","type_th":"แคมเปญการตลาด (Marketing Activities)","total":23,"share_of_branch_pct":2.01,"approved":15,"approved_pct":65.22,"non_approved":8,"non_approved_pct":34.78,"kpi_gap":-29.78,"kpi_passed":false,"returned_count":6,"rejected_count":0,"pending_count":2,"actioned_non_approved_count":6,"top3_reasons_actioned":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":3,"pct_of_actioned":50.0,"pct_of_type_non_approved":37.5,"samples":[{"text":"กรุณาแนบPop up BYD CARE ใน DMS","count":2},{"text":"กรุณาแนบPop up BYD CARE ใน DMS แก้ไขกลับมาภายใน 2 วัน เพื่อป้องกันเลยระยะเวลากำหนด over time limit","count":1}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":1,"pct_of_actioned":16.67,"pct_of_type_non_approved":12.5,"samples":[{"text":"Over the report time limit","count":1}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":1,"pct_of_actioned":16.67,"pct_of_type_non_approved":12.5,"samples":[{"text":"หมายเลขตัวถังนี้ไม่ได้รับสิทธิ์ตรวจเช็กระยะฟรีตามเงื่อนไขของแคมเปญส่งเสริมการขาย เนื่องจากลูกค้าเ...","count":1}]}],"top3_reasons_all":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":3,"pct_of_type_non_approved":37.5,"pct_of_type_total":13.04,"samples":[{"text":"กรุณาแนบPop up BYD CARE ใน DMS","count":2},{"text":"กรุณาแนบPop up BYD CARE ใน DMS แก้ไขกลับมาภายใน 2 วัน เพื่อป้องกันเลยระยะเวลากำหนด over time limit","count":1}]},{"reason":"อยู่ระหว่างดำเนินการ / รอพิจารณาอนุมัติ (Pending / In-Process)","count":2,"pct_of_type_non_approved":25.0,"pct_of_type_total":8.7,"samples":[{"text":"(ไม่ระบุข้อความในช่อง Approval remarks)","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":1,"pct_of_type_non_approved":12.5,"pct_of_type_total":4.35,"samples":[{"text":"Over the report time limit","count":1}]}]},{"type_en":"Pre-sales claim","type_th":"เคลมก่อนส่งมอบ (Pre-sales / PDI)","total":16,"share_of_branch_pct":1.4,"approved":10,"approved_pct":62.5,"non_approved":6,"non_approved_pct":37.5,"kpi_gap":-32.5,"kpi_passed":false,"returned_count":3,"rejected_count":3,"pending_count":0,"actioned_non_approved_count":6,"top3_reasons_actioned":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":2,"pct_of_actioned":33.33,"pct_of_type_non_approved":33.33,"samples":[{"text":"Over the report time limit","count":2}]},{"reason":"เคลมซ้ำ / ต้องรวมใบเคลม (Duplicate / Combined Claim)","count":2,"pct_of_actioned":33.33,"pct_of_type_non_approved":33.33,"samples":[{"text":"เคลมซ้ำ","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":2,"pct_of_actioned":33.33,"pct_of_type_non_approved":33.33,"samples":[{"text":"เทคนิค PDI คอนเฟริมว่าไม่พบข้อมูลrecordปัญหานี้ค่ะ","count":1},{"text":"not quality problem","count":1}]}],"top3_reasons_all":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":2,"pct_of_type_non_approved":33.33,"pct_of_type_total":12.5,"samples":[{"text":"Over the report time limit","count":2}]},{"reason":"เคลมซ้ำ / ต้องรวมใบเคลม (Duplicate / Combined Claim)","count":2,"pct_of_type_non_approved":33.33,"pct_of_type_total":12.5,"samples":[{"text":"เคลมซ้ำ","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":2,"pct_of_type_non_approved":33.33,"pct_of_type_total":12.5,"samples":[{"text":"เทคนิค PDI คอนเฟริมว่าไม่พบข้อมูลrecordปัญหานี้ค่ะ","count":1},{"text":"not quality problem","count":1}]}]},{"type_en":"Resubmit a claim","type_th":"ยื่นเคลมซ้ำตามสิทธิ์ (Resubmit Claim)","total":1,"share_of_branch_pct":0.09,"approved":1,"approved_pct":100.0,"non_approved":0,"non_approved_pct":0.0,"kpi_gap":5.0,"kpi_passed":true,"returned_count":0,"rejected_count":0,"pending_count":0,"actioned_non_approved_count":0,"top3_reasons_actioned":[],"top3_reasons_all":[]}]},"phetchaburi":{"name":"BYD Phetchaburi EV (สาขาเพชรบุรี)","subtitle":"บริษัท เพชรบุรี อีวี จำกัด | รหัสดีลเลอร์: APTH27D2SW","total_claims":916,"approved_claims":799,"non_approved_claims":117,"approved_pct":87.23,"non_approved_pct":12.77,"kpi_target":95.0,"kpi_gap":-7.77,"returned_total":104,"rejected_total":11,"pending_total":2,"status_breakdown":[{"status_en":"Agreed","status_th":"อนุมัติ","group":"Approved","count":406,"pct":44.32},{"status_en":"Approved by distributor","status_th":"อนุมัติ","group":"Approved","count":393,"pct":42.9},{"status_en":"Return by dealer","status_th":"Rever ส่งคืน","group":"Returned","count":99,"pct":10.81},{"status_en":"Reported by sub-dealer","status_th":"ดีลเลอร์ยื่นส่งรายงานเคลม","group":"Pending","count":1,"pct":0.11},{"status_en":"Rejected","status_th":"BYD ปฏิเสธ","group":"Rejected/Refused","count":6,"pct":0.66},{"status_en":"Refused by dealer","status_th":"rever ปฏิเสธ","group":"Rejected/Refused","count":5,"pct":0.55},{"status_en":"Return","status_th":"BYD ส่งคืน","group":"Returned","count":5,"pct":0.55},{"status_en":"Save","status_th":"Rever ยื่นส่ง BYD","group":"Pending","count":0,"pct":0.0},{"status_en":"Submitted","status_th":"Rever ยื่นส่ง BYD","group":"Pending","count":1,"pct":0.11}],"claim_types":[{"type_en":"Free maintenance claim","type_th":"เช็กระยะฟรี (Free Maintenance)","total":427,"share_of_branch_pct":46.62,"approved":393,"approved_pct":92.04,"non_approved":34,"non_approved_pct":7.96,"kpi_gap":-2.96,"kpi_passed":false,"returned_count":30,"rejected_count":3,"pending_count":1,"actioned_non_approved_count":33,"top3_reasons_actioned":[{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":11,"pct_of_actioned":33.33,"pct_of_type_non_approved":32.35,"samples":[{"text":"ข้อมูล VIN, เลขไมล์, Warranty book และประวัติ Service ไม่สอดคล้องกับรูปภาพที่แนบมา","count":2},{"text":"เลขไมล์ไม่ถูกต้อง","count":2}]},{"reason":"เลือกประเภทเคลมผิด / ขั้นตอนแคมเปญไม่ถูกต้อง","count":10,"pct_of_actioned":30.3,"pct_of_type_non_approved":29.41,"samples":[{"text":"แก้ไขประเภทเป็น Marketing activities claim และกรอกรายละเอียดงานเคลมเช็กระยะทั้งภาษาไทยและภาษาอังก...","count":6},{"text":"แก้ไขข้อมูลดังนี้ อ้างอิงข่าวสาร BT-RSV-2026-0014 เอกสารแนบ 8 สำหรับแพคเกจลูกค้า","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":6,"pct_of_actioned":18.18,"pct_of_type_non_approved":17.65,"samples":[{"text":"Over the report time limit","count":6}]}],"top3_reasons_all":[{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":11,"pct_of_type_non_approved":32.35,"pct_of_type_total":2.58,"samples":[{"text":"ข้อมูล VIN, เลขไมล์, Warranty book และประวัติ Service ไม่สอดคล้องกับรูปภาพที่แนบมา","count":2},{"text":"เลขไมล์ไม่ถูกต้อง","count":2}]},{"reason":"เลือกประเภทเคลมผิด / ขั้นตอนแคมเปญไม่ถูกต้อง","count":10,"pct_of_type_non_approved":29.41,"pct_of_type_total":2.34,"samples":[{"text":"แก้ไขประเภทเป็น Marketing activities claim และกรอกรายละเอียดงานเคลมเช็กระยะทั้งภาษาไทยและภาษาอังก...","count":6},{"text":"แก้ไขข้อมูลดังนี้ อ้างอิงข่าวสาร BT-RSV-2026-0014 เอกสารแนบ 8 สำหรับแพคเกจลูกค้า","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":6,"pct_of_type_non_approved":17.65,"pct_of_type_total":1.41,"samples":[{"text":"Over the report time limit","count":6}]}]},{"type_en":"General Claim","type_th":"เคลมทั่วไป (General Claim)","total":378,"share_of_branch_pct":41.27,"approved":309,"approved_pct":81.75,"non_approved":69,"non_approved_pct":18.25,"kpi_gap":-13.25,"kpi_passed":false,"returned_count":61,"rejected_count":7,"pending_count":1,"actioned_non_approved_count":68,"top3_reasons_actioned":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":25,"pct_of_actioned":36.76,"pct_of_type_non_approved":36.23,"samples":[{"text":"แนบรูป รอยร้าว","count":2},{"text":"แนบใบสั่งอะไหล่มาด้วยค่ะ","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":13,"pct_of_actioned":19.12,"pct_of_type_non_approved":18.84,"samples":[{"text":"Exceeding the scope of the claim","count":4},{"text":"เกินระยะประกัน 100,000 km.","count":2}]},{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":11,"pct_of_actioned":16.18,"pct_of_type_non_approved":15.94,"samples":[{"text":"mileage ไม่ตรง","count":4},{"text":"Mileage ไม่ตรง","count":2}]}],"top3_reasons_all":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":25,"pct_of_type_non_approved":36.23,"pct_of_type_total":6.61,"samples":[{"text":"แนบรูป รอยร้าว","count":2},{"text":"แนบใบสั่งอะไหล่มาด้วยค่ะ","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":13,"pct_of_type_non_approved":18.84,"pct_of_type_total":3.44,"samples":[{"text":"Exceeding the scope of the claim","count":4},{"text":"เกินระยะประกัน 100,000 km.","count":2}]},{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":11,"pct_of_type_non_approved":15.94,"pct_of_type_total":2.91,"samples":[{"text":"mileage ไม่ตรง","count":4},{"text":"Mileage ไม่ตรง","count":2}]}]},{"type_en":"Claim of Technical Project","type_th":"แคมเปญเทคนิค (Technical Project / TJ)","total":100,"share_of_branch_pct":10.92,"approved":89,"approved_pct":89.0,"non_approved":11,"non_approved_pct":11.0,"kpi_gap":-6.0,"kpi_passed":false,"returned_count":10,"rejected_count":1,"pending_count":0,"actioned_non_approved_count":11,"top3_reasons_actioned":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":5,"pct_of_actioned":45.45,"pct_of_type_non_approved":45.45,"samples":[{"text":"เบิกค่าใช้จ่าย Invitation Fee จำนวน 500 บาท เป็นค่าใช้จ่ายอื่นๆ เข้าระบบ ตาม BT-TEC-2025-0012 ประ...","count":3},{"text":"ระบุ Other cost ค่าใช้จ่ายอื่นๆ  QT04 = 500 บาท ราคาไม่รวม vat 7% ระบุข้อความช่องรายละเอียด other...","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":5,"pct_of_actioned":45.45,"pct_of_type_non_approved":45.45,"samples":[{"text":"Over the report time limit","count":5}]},{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":1,"pct_of_actioned":9.09,"pct_of_type_non_approved":9.09,"samples":[{"text":"mileage ไม่ตรง","count":1}]}],"top3_reasons_all":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":5,"pct_of_type_non_approved":45.45,"pct_of_type_total":5.0,"samples":[{"text":"เบิกค่าใช้จ่าย Invitation Fee จำนวน 500 บาท เป็นค่าใช้จ่ายอื่นๆ เข้าระบบ ตาม BT-TEC-2025-0012 ประ...","count":3},{"text":"ระบุ Other cost ค่าใช้จ่ายอื่นๆ  QT04 = 500 บาท ราคาไม่รวม vat 7% ระบุข้อความช่องรายละเอียด other...","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":5,"pct_of_type_non_approved":45.45,"pct_of_type_total":5.0,"samples":[{"text":"Over the report time limit","count":5}]},{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":1,"pct_of_type_non_approved":8.33,"pct_of_type_total":1.0,"samples":[{"text":"mileage ไม่ตรง","count":1}]}]},{"type_en":"Replace under FOC Claim","type_th":"เคลมอะไหล่ฟรี (Replace under FOC)","total":8,"share_of_branch_pct":0.87,"approved":6,"approved_pct":75.0,"non_approved":2,"non_approved_pct":25.0,"kpi_gap":-20.0,"kpi_passed":false,"returned_count":2,"rejected_count":0,"pending_count":0,"actioned_non_approved_count":2,"top3_reasons_actioned":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":1,"pct_of_actioned":50.0,"pct_of_type_non_approved":50.0,"samples":[{"text":"Over the report time limit","count":1}]},{"reason":"เลือกประเภทเคลมผิด / ขั้นตอนแคมเปญไม่ถูกต้อง","count":1,"pct_of_actioned":50.0,"pct_of_type_non_approved":50.0,"samples":[{"text":"เคลมผิดประเภท รบกวนแก้ไขประเภทเคลมจาก FOC เป็น TJ (Technical Project) เนื่องจาก VIN: LGXCE4CB8P20...","count":1}]}],"top3_reasons_all":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":1,"pct_of_type_non_approved":50.0,"pct_of_type_total":12.5,"samples":[{"text":"Over the report time limit","count":1}]},{"reason":"เลือกประเภทเคลมผิด / ขั้นตอนแคมเปญไม่ถูกต้อง","count":1,"pct_of_type_non_approved":50.0,"pct_of_type_total":12.5,"samples":[{"text":"เคลมผิดประเภท รบกวนแก้ไขประเภทเคลมจาก FOC เป็น TJ (Technical Project) เนื่องจาก VIN: LGXCE4CB8P20...","count":1}]}]},{"type_en":"Marketing activities claim","type_th":"แคมเปญการตลาด (Marketing Activities)","total":1,"share_of_branch_pct":0.11,"approved":0,"approved_pct":0.0,"non_approved":1,"non_approved_pct":100.0,"kpi_gap":-95.0,"kpi_passed":false,"returned_count":1,"rejected_count":0,"pending_count":0,"actioned_non_approved_count":1,"top3_reasons_actioned":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":1,"pct_of_actioned":100.0,"pct_of_type_non_approved":100.0,"samples":[{"text":"1.ระบุ รหัสค่าแรง THSEALION5SPECIAL   No working hours project =  0 ชม. 2.ลบรายการอะไหล่ 3.ระบุ O...","count":1}]}],"top3_reasons_all":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":1,"pct_of_type_non_approved":100.0,"pct_of_type_total":100.0,"samples":[{"text":"1.ระบุ รหัสค่าแรง THSEALION5SPECIAL   No working hours project =  0 ชม. 2.ลบรายการอะไหล่ 3.ระบุ O...","count":1}]}]},{"type_en":"Pre-sales claim","type_th":"เคลมก่อนส่งมอบ (Pre-sales / PDI)","total":1,"share_of_branch_pct":0.11,"approved":1,"approved_pct":100.0,"non_approved":0,"non_approved_pct":0.0,"kpi_gap":5.0,"kpi_passed":true,"returned_count":0,"rejected_count":0,"pending_count":0,"actioned_non_approved_count":0,"top3_reasons_actioned":[],"top3_reasons_all":[]},{"type_en":"Resubmit a claim","type_th":"ยื่นเคลมซ้ำตามสิทธิ์ (Resubmit Claim)","total":1,"share_of_branch_pct":0.11,"approved":1,"approved_pct":100.0,"non_approved":0,"non_approved_pct":0.0,"kpi_gap":5.0,"kpi_passed":true,"returned_count":0,"rejected_count":0,"pending_count":0,"actioned_non_approved_count":0,"top3_reasons_actioned":[],"top3_reasons_all":[]}]},"all_group":{"name":"Phetburi EV Group (ภาพรวมรวม 2 สาขา)","subtitle":"รวม BYD B1 Ratchaburi (1,142 เคลม) และ BYD Phetchaburi EV (916 เคลม)","total_claims":2058,"approved_claims":1800,"non_approved_claims":258,"approved_pct":87.46,"non_approved_pct":12.54,"kpi_target":95.0,"kpi_gap":-7.54,"returned_total":185,"rejected_total":34,"pending_total":39,"status_breakdown":[{"status_en":"Agreed","status_th":"อนุมัติ","group":"Approved","count":919,"pct":44.66},{"status_en":"Approved by distributor","status_th":"อนุมัติ","group":"Approved","count":881,"pct":42.81},{"status_en":"Return by dealer","status_th":"Rever ส่งคืน","group":"Returned","count":173,"pct":8.41},{"status_en":"Reported by sub-dealer","status_th":"ดีลเลอร์ยื่นส่งรายงานเคลม","group":"Pending","count":25,"pct":1.21},{"status_en":"Rejected","status_th":"BYD ปฏิเสธ","group":"Rejected/Refused","count":19,"pct":0.92},{"status_en":"Refused by dealer","status_th":"rever ปฏิเสธ","group":"Rejected/Refused","count":15,"pct":0.73},{"status_en":"Return","status_th":"BYD ส่งคืน","group":"Returned","count":12,"pct":0.58},{"status_en":"Save","status_th":"Rever ยื่นส่ง BYD","group":"Pending","count":10,"pct":0.49},{"status_en":"Submitted","status_th":"Rever ยื่นส่ง BYD","group":"Pending","count":4,"pct":0.19}],"claim_types":[{"type_en":"Free maintenance claim","type_th":"เช็กระยะฟรี (Free Maintenance)","total":999,"share_of_branch_pct":48.54,"approved":881,"approved_pct":88.19,"non_approved":118,"non_approved_pct":11.81,"kpi_gap":-6.81,"kpi_passed":false,"returned_count":78,"rejected_count":9,"pending_count":31,"actioned_non_approved_count":87,"top3_reasons_actioned":[{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":31,"pct_of_actioned":35.63,"pct_of_type_non_approved":26.27,"samples":[{"text":"-โปรดแนบข้อมูลประวัติ Service ล่าสุด ที่สอดคล้องกับข้อมูลในระบบด้วยนะคะ","count":5},{"text":"-ข้อมูล VIN, เลขไมล์, Warranty book และประวัติ Service ที่แนบมาไม่สอดคล้องกับข้อมูลในระบบDMS โปรด...","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":14,"pct_of_actioned":16.09,"pct_of_type_non_approved":11.86,"samples":[{"text":"Over the report time limit","count":14}]},{"reason":"เลือกประเภทเคลมผิด / ขั้นตอนแคมเปญไม่ถูกต้อง","count":14,"pct_of_actioned":16.09,"pct_of_type_non_approved":11.86,"samples":[{"text":"แก้ไขประเภทเป็น Marketing activities claim และกรอกรายละเอียดงานเคลมเช็กระยะทั้งภาษาไทยและภาษาอังก...","count":6},{"text":"แก้ไขประเภทเคลมเป็น Marketing activities claim ดีลเลอร์สามารถเปิด Job ค้างไว้เพื่อรอ Pop-up ได้ก่...","count":2}]}],"top3_reasons_all":[{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":31,"pct_of_type_non_approved":26.27,"pct_of_type_total":3.1,"samples":[{"text":"-โปรดแนบข้อมูลประวัติ Service ล่าสุด ที่สอดคล้องกับข้อมูลในระบบด้วยนะคะ","count":5},{"text":"-ข้อมูล VIN, เลขไมล์, Warranty book และประวัติ Service ที่แนบมาไม่สอดคล้องกับข้อมูลในระบบDMS โปรด...","count":2}]},{"reason":"อยู่ระหว่างดำเนินการ / รอพิจารณาอนุมัติ (Pending / In-Process)","count":31,"pct_of_type_non_approved":26.27,"pct_of_type_total":3.1,"samples":[{"text":"Dealer agreed automaticly","count":23},{"text":"(ไม่ระบุข้อความในช่อง Approval remarks)","count":8}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":14,"pct_of_type_non_approved":11.86,"pct_of_type_total":1.4,"samples":[{"text":"Over the report time limit","count":14}]}]},{"type_en":"General Claim","type_th":"เคลมทั่วไป (General Claim)","total":787,"share_of_branch_pct":38.24,"approved":681,"approved_pct":86.53,"non_approved":106,"non_approved_pct":13.47,"kpi_gap":-8.47,"kpi_passed":false,"returned_count":83,"rejected_count":18,"pending_count":5,"actioned_non_approved_count":101,"top3_reasons_actioned":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":28,"pct_of_actioned":27.72,"pct_of_type_non_approved":26.42,"samples":[{"text":"แนบรูป รอยร้าว","count":2},{"text":"แนบใบสั่งอะไหล่มาด้วยค่ะ","count":2}]},{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":20,"pct_of_actioned":19.8,"pct_of_type_non_approved":18.87,"samples":[{"text":"ได้ตั้งศูนย์ถ่วงล้อให้ลูกค้าไหมคะ ถ้าตั้งศูนย์ให้แนบหลักฐานมาด้วยค่ะ ถ้าไม่ได้ตั้งศูนย์ให้ใช้ค่าแ...","count":2},{"text":"ได้ตั้งศูนย์ถ่วงล้อให้ลูกค้าไหมคะ ถ้าตั้งศูนย์ให้แนบหลักฐานมาด้วยค่ะ ถ้าไม่ได้ตั้งศูนย์ให้ใช้ค่าแ...","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":19,"pct_of_actioned":18.81,"pct_of_type_non_approved":17.92,"samples":[{"text":"Exceeding the scope of the claim","count":7},{"text":"not quality problem","count":3}]}],"top3_reasons_all":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":28,"pct_of_type_non_approved":26.42,"pct_of_type_total":3.56,"samples":[{"text":"แนบรูป รอยร้าว","count":2},{"text":"แนบใบสั่งอะไหล่มาด้วยค่ะ","count":2}]},{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":20,"pct_of_type_non_approved":18.87,"pct_of_type_total":2.54,"samples":[{"text":"ได้ตั้งศูนย์ถ่วงล้อให้ลูกค้าไหมคะ ถ้าตั้งศูนย์ให้แนบหลักฐานมาด้วยค่ะ ถ้าไม่ได้ตั้งศูนย์ให้ใช้ค่าแ...","count":2},{"text":"ได้ตั้งศูนย์ถ่วงล้อให้ลูกค้าไหมคะ ถ้าตั้งศูนย์ให้แนบหลักฐานมาด้วยค่ะ ถ้าไม่ได้ตั้งศูนย์ให้ใช้ค่าแ...","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":19,"pct_of_type_non_approved":17.92,"pct_of_type_total":2.41,"samples":[{"text":"Exceeding the scope of the claim","count":7},{"text":"not quality problem","count":3}]}]},{"type_en":"Claim of Technical Project","type_th":"แคมเปญเทคนิค (Technical Project / TJ)","total":201,"share_of_branch_pct":9.77,"approved":189,"approved_pct":94.03,"non_approved":12,"non_approved_pct":5.97,"kpi_gap":-0.97,"kpi_passed":false,"returned_count":10,"rejected_count":2,"pending_count":0,"actioned_non_approved_count":12,"top3_reasons_actioned":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":5,"pct_of_actioned":41.67,"pct_of_type_non_approved":41.67,"samples":[{"text":"เบิกค่าใช้จ่าย Invitation Fee จำนวน 500 บาท เป็นค่าใช้จ่ายอื่นๆ เข้าระบบ ตาม BT-TEC-2025-0012 ประ...","count":3},{"text":"ระบุ Other cost ค่าใช้จ่ายอื่นๆ  QT04 = 500 บาท ราคาไม่รวม vat 7% ระบุข้อความช่องรายละเอียด other...","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":5,"pct_of_actioned":41.67,"pct_of_type_non_approved":41.67,"samples":[{"text":"Over the report time limit","count":5}]},{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":1,"pct_of_actioned":8.33,"pct_of_type_non_approved":8.33,"samples":[{"text":"mileage ไม่ตรง","count":1}]}],"top3_reasons_all":[{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":5,"pct_of_type_non_approved":41.67,"pct_of_type_total":2.49,"samples":[{"text":"เบิกค่าใช้จ่าย Invitation Fee จำนวน 500 บาท เป็นค่าใช้จ่ายอื่นๆ เข้าระบบ ตาม BT-TEC-2025-0012 ประ...","count":3},{"text":"ระบุ Other cost ค่าใช้จ่ายอื่นๆ  QT04 = 500 บาท ราคาไม่รวม vat 7% ระบุข้อความช่องรายละเอียด other...","count":2}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":5,"pct_of_type_non_approved":41.67,"pct_of_type_total":2.49,"samples":[{"text":"Over the report time limit","count":5}]},{"reason":"ข้อมูลไม่ตรงกับระบบ DMS (เลขไมล์ / VIN / ประวัติ Service / สมุดรับประกัน)","count":1,"pct_of_type_non_approved":8.33,"pct_of_type_total":0.5,"samples":[{"text":"mileage ไม่ตรง","count":1}]}]},{"type_en":"Replace under FOC Claim","type_th":"เคลมอะไหล่ฟรี (Replace under FOC)","total":28,"share_of_branch_pct":1.36,"approved":21,"approved_pct":75.0,"non_approved":7,"non_approved_pct":25.0,"kpi_gap":-20.0,"kpi_passed":false,"returned_count":4,"rejected_count":2,"pending_count":1,"actioned_non_approved_count":6,"top3_reasons_actioned":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":3,"pct_of_actioned":50.0,"pct_of_type_non_approved":42.86,"samples":[{"text":"Over the report time limit","count":3}]},{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":2,"pct_of_actioned":33.33,"pct_of_type_non_approved":28.57,"samples":[{"text":"other cost; use before VAT price","count":1},{"text":"ระบุปริมาณน้ำยาที่ดูดไม่ตรงตาม vacuum data ระบุ R134a ที่ดูดออก 21 g น้ำมันคอมที่ดูดออก 50 g ราคา...","count":1}]},{"reason":"เลือกประเภทเคลมผิด / ขั้นตอนแคมเปญไม่ถูกต้อง","count":1,"pct_of_actioned":16.67,"pct_of_type_non_approved":14.29,"samples":[{"text":"เคลมผิดประเภท รบกวนแก้ไขประเภทเคลมจาก FOC เป็น TJ (Technical Project) เนื่องจาก VIN: LGXCE4CB8P20...","count":1}]}],"top3_reasons_all":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":3,"pct_of_type_non_approved":42.86,"pct_of_type_total":10.71,"samples":[{"text":"Over the report time limit","count":3}]},{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":2,"pct_of_type_non_approved":28.57,"pct_of_type_total":7.14,"samples":[{"text":"other cost; use before VAT price","count":1},{"text":"ระบุปริมาณน้ำยาที่ดูดไม่ตรงตาม vacuum data ระบุ R134a ที่ดูดออก 21 g น้ำมันคอมที่ดูดออก 50 g ราคา...","count":1}]},{"reason":"อยู่ระหว่างดำเนินการ / รอพิจารณาอนุมัติ (Pending / In-Process)","count":1,"pct_of_type_non_approved":14.29,"pct_of_type_total":3.57,"samples":[{"text":"System Initial review Approved","count":1}]}]},{"type_en":"Marketing activities claim","type_th":"แคมเปญการตลาด (Marketing Activities)","total":24,"share_of_branch_pct":1.17,"approved":15,"approved_pct":62.5,"non_approved":9,"non_approved_pct":37.5,"kpi_gap":-32.5,"kpi_passed":false,"returned_count":7,"rejected_count":0,"pending_count":2,"actioned_non_approved_count":7,"top3_reasons_actioned":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":3,"pct_of_actioned":42.86,"pct_of_type_non_approved":33.33,"samples":[{"text":"กรุณาแนบPop up BYD CARE ใน DMS","count":2},{"text":"กรุณาแนบPop up BYD CARE ใน DMS แก้ไขกลับมาภายใน 2 วัน เพื่อป้องกันเลยระยะเวลากำหนด over time limit","count":1}]},{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":1,"pct_of_actioned":14.29,"pct_of_type_non_approved":11.11,"samples":[{"text":"1.ระบุ รหัสค่าแรง THSEALION5SPECIAL   No working hours project =  0 ชม. 2.ลบรายการอะไหล่ 3.ระบุ O...","count":1}]},{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":1,"pct_of_actioned":14.29,"pct_of_type_non_approved":11.11,"samples":[{"text":"Over the report time limit","count":1}]}],"top3_reasons_all":[{"reason":"หลักฐานประกอบไม่ครบหรือไม่ชัดเจน (วิดีโอ / รูปภาพ / บาร์โค้ด / ใบสั่งอะไหล่)","count":3,"pct_of_type_non_approved":33.33,"pct_of_type_total":12.5,"samples":[{"text":"กรุณาแนบPop up BYD CARE ใน DMS","count":2},{"text":"กรุณาแนบPop up BYD CARE ใน DMS แก้ไขกลับมาภายใน 2 วัน เพื่อป้องกันเลยระยะเวลากำหนด over time limit","count":1}]},{"reason":"อยู่ระหว่างดำเนินการ / รอพิจารณาอนุมัติ (Pending / In-Process)","count":2,"pct_of_type_non_approved":22.22,"pct_of_type_total":8.33,"samples":[{"text":"(ไม่ระบุข้อความในช่อง Approval remarks)","count":2}]},{"reason":"รหัสค่าแรง / ค่าใช้จ่ายอื่นๆ (Other Cost) / ข้อมูลอะไหล่ไม่ถูกต้อง","count":1,"pct_of_type_non_approved":11.11,"pct_of_type_total":4.17,"samples":[{"text":"1.ระบุ รหัสค่าแรง THSEALION5SPECIAL   No working hours project =  0 ชม. 2.ลบรายการอะไหล่ 3.ระบุ O...","count":1}]}]},{"type_en":"Pre-sales claim","type_th":"เคลมก่อนส่งมอบ (Pre-sales / PDI)","total":17,"share_of_branch_pct":0.83,"approved":11,"approved_pct":64.71,"non_approved":6,"non_approved_pct":35.29,"kpi_gap":-30.29,"kpi_passed":false,"returned_count":3,"rejected_count":3,"pending_count":0,"actioned_non_approved_count":6,"top3_reasons_actioned":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":2,"pct_of_actioned":33.33,"pct_of_type_non_approved":33.33,"samples":[{"text":"Over the report time limit","count":2}]},{"reason":"เคลมซ้ำ / ต้องรวมใบเคลม (Duplicate / Combined Claim)","count":2,"pct_of_actioned":33.33,"pct_of_type_non_approved":33.33,"samples":[{"text":"เคลมซ้ำ","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":2,"pct_of_actioned":33.33,"pct_of_type_non_approved":33.33,"samples":[{"text":"เทคนิค PDI คอนเฟริมว่าไม่พบข้อมูลrecordปัญหานี้ค่ะ","count":1},{"text":"not quality problem","count":1}]}],"top3_reasons_all":[{"reason":"ส่งเคลมเกินระยะเวลาที่กำหนด (Over the report time limit)","count":2,"pct_of_type_non_approved":33.33,"pct_of_type_total":11.76,"samples":[{"text":"Over the report time limit","count":2}]},{"reason":"เคลมซ้ำ / ต้องรวมใบเคลม (Duplicate / Combined Claim)","count":2,"pct_of_type_non_approved":33.33,"pct_of_type_total":11.76,"samples":[{"text":"เคลมซ้ำ","count":2}]},{"reason":"ไม่อยู่ในเงื่อนไขรับประกัน / เกินระยะ / ไม่ใช่ปัญหาคุณภาพ","count":2,"pct_of_type_non_approved":33.33,"pct_of_type_total":11.76,"samples":[{"text":"เทคนิค PDI คอนเฟริมว่าไม่พบข้อมูลrecordปัญหานี้ค่ะ","count":1},{"text":"not quality problem","count":1}]}]},{"type_en":"Resubmit a claim","type_th":"ยื่นเคลมซ้ำตามสิทธิ์ (Resubmit Claim)","total":2,"share_of_branch_pct":0.1,"approved":2,"approved_pct":100.0,"non_approved":0,"non_approved_pct":0.0,"kpi_gap":5.0,"kpi_passed":true,"returned_count":0,"rejected_count":0,"pending_count":0,"actioned_non_approved_count":0,"top3_reasons_actioned":[],"top3_reasons_all":[]}]}}};
+let currentBranch = 'ratchaburi';
+let currentReasonMode = 'actioned'; // 'actioned' or 'all'
+function escapeHtml(str) {
+if (!str) return '';
+return String(str)
+.replace(/&/g, '&amp;')
+.replace(/</g, '&lt;')
+.replace(/>/g, '&gt;')
+.replace(/"/g, '&quot;');
+}
+function selectBranch(branchKey) {
+currentBranch = branchKey;
+document.querySelectorAll('.branch-tab').forEach(btn => {
+btn.classList.toggle('active', btn.getAttribute('data-branch') === branchKey);
+});
+document.querySelectorAll('.b-mini-card').forEach(card => {
+card.classList.remove('selected');
+});
+const miniEl = document.getElementById('mini-' + branchKey);
+if (miniEl) miniEl.classList.add('selected');
+renderDashboard();
+}
+function setReasonMode(mode) {
+currentReasonMode = mode;
+document.getElementById('btnModeActioned').classList.toggle('active', mode === 'actioned');
+document.getElementById('btnModeAll').classList.toggle('active', mode === 'all');
+renderTop3Section(DASHBOARD_DATA.branches[currentBranch]);
+}
+function renderDashboard() {
+const bData = DASHBOARD_DATA.branches[currentBranch];
+if (!bData) return;
+document.getElementById('activeBranchTitle').textContent = bData.name;
+document.getElementById('activeBranchSubtitle').textContent = bData.subtitle;
+// Render KPI Grid
+const gapSign = bData.kpi_gap >= 0 ? '+' : '';
+const kpiHtml = `
+<div class="kpi-card" style="--card-accent: #3b82f6;">
+<div class="kpi-label">จำนวนเคลมทั้งปี (Total Claims)</div>
+<div class="kpi-value">${bData.total_claims.toLocaleString()} <span style="font-size:1rem; font-weight:500; color:#94a3b8;">เคลม</span></div>
+<div class="kpi-sub">ครอบคลุม ${bData.claim_types.length} ประเภทเคลม (ลบซ้ำ Col I แล้ว)</div>
+</div>
+<div class="kpi-card" style="--card-accent: #10b981;">
+<div class="kpi-label">อนุมัติแล้ว (Approved Claims)</div>
+<div class="kpi-value" style="color:#34d399;">${bData.approved_claims.toLocaleString()} <span style="font-size:1.15rem;">(${bData.approved_pct.toFixed(2)}%)</span></div>
+<div class="kpi-sub">Agreed + Approved by distributor</div>
+</div>
+<div class="kpi-card" style="--card-accent: #f43f5e;">
+<div class="kpi-label">ไม่อนุมัติรวม (Non-Approved Claims)</div>
+<div class="kpi-value" style="color:#fb7185;">${bData.non_approved_claims.toLocaleString()} <span style="font-size:1.15rem;">(${bData.non_approved_pct.toFixed(2)}%)</span></div>
+<div class="kpi-sub">ส่งคืน ${bData.returned_total} | ปฏิเสธ ${bData.rejected_total} | รอผล ${bData.pending_total}</div>
+</div>
+<div class="kpi-card" style="--card-accent: #f59e0b;">
+<div class="kpi-label">เทียบเป้าหมาย KPI (Target ≥ 95.00%)</div>
+<div class="kpi-value" style="color:${bData.kpi_gap >= 0 ? '#34d399' : '#fbbf24'};">${gapSign}${bData.kpi_gap.toFixed(2)}%</div>
+<div class="kpi-sub">
+<span class="pill ${bData.kpi_gap >= 0 ? 'pill-pass' : 'pill-fail'}">
+${bData.kpi_gap >= 0 ? 'ผ่านเกณฑ์ KPI ≥ 95%' : 'ต่ำกว่าเป้าหมาย KPI 95%'}
+</span>
+</div>
+</div>
+`;
+document.getElementById('kpiGrid').innerHTML = kpiHtml;
+// Render Topic 7.1 Volume Table
+let volRows = bData.claim_types.map((ct, idx) => `
+<tr>
+<td><strong>${idx + 1}. ${escapeHtml(ct.type_en)}</strong><div style="font-size:0.76rem; color:#94a3b8;">${escapeHtml(ct.type_th)}</div></td>
+<td class="text-right"><strong>${ct.total.toLocaleString()}</strong></td>
+<td class="text-right">${ct.share_of_branch_pct.toFixed(2)}%</td>
+<td>
+<div class="bar-container" style="min-width:90px;">
+<div class="bar-fill" style="width:${Math.max(2, ct.share_of_branch_pct)}%; background: linear-gradient(90deg, #14b8a6, #3b82f6);"></div>
+</div>
+</td>
+</tr>
+`).join('');
+volRows += `
+<tr class="total-row">
+<td>รวมเคลมทั้งสิ้น (${escapeHtml(bData.name)})</td>
+<td class="text-right">${bData.total_claims.toLocaleString()}</td>
+<td class="text-right">100.00%</td>
+<td></td>
+</tr>
+`;
+document.getElementById('volumeTableWrap').innerHTML = `
+<table>
+<thead>
+<tr>
+<th>ประเภทเคลม (Type of claim)</th>
+<th class="text-right">จำนวน (เคลม)</th>
+<th class="text-right">สัดส่วน (%)</th>
+<th>สัดส่วนปริมาณงาน</th>
+</tr>
+</thead>
+<tbody>${volRows}</tbody>
+</table>
+`;
+// Render Status Breakdown Table (Col AU)
+let stRows = bData.status_breakdown.map(st => {
+let pillClass = 'pill-info';
+if (st.group === 'Approved') pillClass = 'pill-pass';
+else if (st.group === 'Returned') pillClass = 'pill-warn';
+else if (st.group === 'Rejected/Refused') pillClass = 'pill-fail';
+return `
+<tr>
+<td><strong>${escapeHtml(st.status_en)}</strong></td>
+<td><span class="pill ${pillClass}">${escapeHtml(st.status_th)}</span></td>
+<td class="text-right"><strong>${st.count.toLocaleString()}</strong></td>
+<td class="text-right">${st.pct.toFixed(2)}%</td>
+</tr>
+`;
+}).join('');
+stRows += `
+<tr class="total-row">
+<td>รวมทุกสถานะ (Total)</td>
+<td>อนุมัติ ${bData.approved_claims.toLocaleString()} | ไม่อนุมัติ ${bData.non_approved_claims.toLocaleString()}</td>
+<td class="text-right">${bData.total_claims.toLocaleString()}</td>
+<td class="text-right">100.00%</td>
+</tr>
+`;
+document.getElementById('statusTableWrap').innerHTML = `
+<table>
+<thead>
+<tr>
+<th>สถานะในระบบ (Col AU)</th>
+<th>ความหมายภาษาไทย</th>
+<th class="text-right">จำนวน (เคลม)</th>
+<th class="text-right">สัดส่วน (%)</th>
+</tr>
+</thead>
+<tbody>${stRows}</tbody>
+</table>
+`;
+// Render Topic 7.2 KPI Table
+let kpiRows = bData.claim_types.map((ct, idx) => {
+const gSign = ct.kpi_gap >= 0 ? '+' : '';
+const statusBadge = ct.kpi_passed
+? `<span class="pill pill-pass">✓ ผ่านเกณฑ์ (${gSign}${ct.kpi_gap.toFixed(2)}%)</span>`
+: `<span class="pill pill-fail">✗ ต่ำกว่าเป้า (${gSign}${ct.kpi_gap.toFixed(2)}%)</span>`;
+const barColor = ct.kpi_passed ? '#10b981' : (ct.approved_pct >= 90 ? '#14b8a6' : '#f43f5e');
+return `
+<tr>
+<td>
+<strong>${idx + 1}. ${escapeHtml(ct.type_en)}</strong>
+<span style="display:block; font-size:0.76rem; color:#94a3b8;">${escapeHtml(ct.type_th)}</span>
+</td>
+<td class="text-right"><strong>${ct.total.toLocaleString()}</strong></td>
+<td class="text-right" style="color:#34d399; font-weight:700;">${ct.approved.toLocaleString()}</td>
+<td class="text-right" style="color:#34d399; font-weight:700;">${ct.approved_pct.toFixed(2)}%</td>
+<td class="text-right" style="color:#fb7185; font-weight:700;">${ct.non_approved.toLocaleString()}</td>
+<td class="text-right" style="color:#fb7185; font-weight:700;">${ct.non_approved_pct.toFixed(2)}%</td>
+<td class="text-center" style="font-size:0.8rem; color:#cbd5e1;">
+ส่งคืน ${ct.returned_count} | ปฏิเสธ ${ct.rejected_count} | รอผล ${ct.pending_count}
+</td>
+<td style="min-width:170px;">
+<div class="bar-container" title="อัตราอนุมัติ ${ct.approved_pct.toFixed(2)}% เทียบเส้น KPI 95%">
+<div class="bar-fill" style="width:${ct.approved_pct}%; background:${barColor};"></div>
+<div class="bar-target-line" title="KPI Target 95%"></div>
+</div>
+</td>
+<td class="text-center">${statusBadge}</td>
+</tr>
+`;
+}).join('');
+const totGapSign = bData.kpi_gap >= 0 ? '+' : '';
+kpiRows += `
+<tr class="total-row">
+<td>รวมทั้งสาขา (${escapeHtml(bData.name)})</td>
+<td class="text-right">${bData.total_claims.toLocaleString()}</td>
+<td class="text-right" style="color:#34d399;">${bData.approved_claims.toLocaleString()}</td>
+<td class="text-right" style="color:#34d399;">${bData.approved_pct.toFixed(2)}%</td>
+<td class="text-right" style="color:#fb7185;">${bData.non_approved_claims.toLocaleString()}</td>
+<td class="text-right" style="color:#fb7185;">${bData.non_approved_pct.toFixed(2)}%</td>
+<td class="text-center">ส่งคืน ${bData.returned_total} | ปฏิเสธ ${bData.rejected_total} | รอผล ${bData.pending_total}</td>
+<td></td>
+<td class="text-center">
+<span class="pill ${bData.kpi_gap >= 0 ? 'pill-pass' : 'pill-fail'}">
+${totGapSign}${bData.kpi_gap.toFixed(2)}%
+</span>
+</td>
+</tr>
+`;
+document.getElementById('kpiTableWrap').innerHTML = `
+<table>
+<thead>
+<tr>
+<th>ประเภทเคลม (Type of claim)</th>
+<th class="text-right">เคลมรวม</th>
+<th class="text-right">อนุมัติ (เคลม)</th>
+<th class="text-right">% อนุมัติ</th>
+<th class="text-right">ไม่อนุมัติ (เคลม)</th>
+<th class="text-right">% ไม่อนุมัติ</th>
+<th class="text-center">แยกสถานะที่ไม่อนุมัติ</th>
+<th>กราฟเทียบ KPI 95% (เส้นเหลือง)</th>
+<th class="text-center">ผลประเมิน KPI (95%)</th>
+</tr>
+</thead>
+<tbody>${kpiRows}</tbody>
+</table>
+`;
+renderTop3Section(bData);
+}
+function renderTop3Section(bData) {
+const cardsHtml = bData.claim_types.map((ct, idx) => {
+const reasonsList = currentReasonMode === 'actioned' ? ct.top3_reasons_actioned : ct.top3_reasons_all;
+const baseDenomLabel = currentReasonMode === 'actioned'
+? `จากที่ถูกตีกลับ/ปฏิเสธ ${ct.actioned_non_approved_count} เคลม`
+: `จากที่ไม่อนุมัติรวม ${ct.non_approved} เคลม`;
+let bodyContent = '';
+if (ct.non_approved === 0) {
+bodyContent = `
+<div style="padding:1rem; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:10px; color:#34d399; font-weight:600; text-align:center;">
+🎉 อนุมัติครบ 100% (${ct.approved}/${ct.total} เคลม) — ไม่มีรายการเคลมที่ไม่อนุมัติในประเภทนี้
+</div>
+`;
+} else if (reasonsList.length === 0) {
+bodyContent = `
+<div style="padding:1rem; background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); border-radius:10px; color:#60a5fa; text-align:center;">
+รายการที่ยังไม่อนุมัติ (${ct.pending_count} เคลม) อยู่ระหว่างรอผลพิจารณาในระบบทั้งหมด ไม่มีเคสถูกตีกลับหรือปฏิเสธ
+</div>
+`;
+} else {
+const itemsHtml = reasonsList.map((r, rIdx) => {
+const rankNum = rIdx + 1;
+const pctVal = currentReasonMode === 'actioned' ? r.pct_of_actioned : r.pct_of_type_non_approved;
+const samplesHtml = (r.samples || []).map(s => `
+<li><span class="sample-tag">[${s.count} เคลม]</span> ${escapeHtml(s.text)}</li>
+`).join('');
+return `
+<div class="reason-item rank-${rankNum}">
+<div class="reason-top">
+<span class="rank-badge">TOP ${rankNum}</span>
+<span class="reason-name">${escapeHtml(r.reason)}</span>
+<span class="reason-count">${r.count} เคลม (${pctVal.toFixed(1)}%)</span>
+</div>
+<div class="reason-samples">
+<div style="font-size:0.74rem; color:#64748b; margin-bottom:0.2rem;">ตัวอย่างข้อความในคอลัมน์ AY (Approval remarks):</div>
+<ul>${samplesHtml}</ul>
+</div>
+</div>
+`;
+}).join('');
+bodyContent = `<div class="reason-rank-list">${itemsHtml}</div>`;
+}
+return `
+<div class="ct-card">
+<div class="ct-card-header">
+<div class="ct-card-title">
+<h4>${idx + 1}. ${escapeHtml(ct.type_en)}</h4>
+<span>${escapeHtml(ct.type_th)} (${baseDenomLabel})</span>
+</div>
+<span class="pill ${ct.kpi_passed ? 'pill-pass' : 'pill-fail'}">
+อนุมัติ ${ct.approved_pct.toFixed(2)}%
+</span>
+</div>
+<div class="ct-stats-strip">
+<div class="ct-stat-item">เคลมรวม: <strong>${ct.total}</strong></div>
+<div class="ct-stat-item">อนุมัติ: <strong style="color:#34d399;">${ct.approved} (${ct.approved_pct.toFixed(1)}%)</strong></div>
+<div class="ct-stat-item">ไม่อนุมัติ: <strong style="color:#fb7185;">${ct.non_approved} (${ct.non_approved_pct.toFixed(1)}%)</strong></div>
+<div class="ct-stat-item">ส่งคืน: <strong style="color:#fbbf24;">${ct.returned_count}</strong> | ปฏิเสธ: <strong style="color:#fb7185;">${ct.rejected_count}</strong> | รอผล: <strong style="color:#60a5fa;">${ct.pending_count}</strong></div>
+</div>
+${bodyContent}
+</div>
+`;
+}).join('');
+document.getElementById('top3CardsContainer').innerHTML = cardsHtml;
+}
+// Initial render
+renderDashboard();
+</script>
+</body>
+</html>
